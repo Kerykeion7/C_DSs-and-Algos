@@ -24,12 +24,21 @@
     <ClInclude Include="HashTables\HashTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedLists\SinglyLinkedNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedLists\SinglyLinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HashTables\HashTable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkedLists\SinglyLinkedList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

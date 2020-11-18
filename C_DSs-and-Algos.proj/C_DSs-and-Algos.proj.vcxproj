@@ -22,12 +22,17 @@
     <ClInclude Include="Arrays\DynamicArray.h" />
     <ClInclude Include="HashTables\HashTable.h" />
     <ClInclude Include="HashTables\HashTableEntry.h" />
+    <ClInclude Include="LinkedLists\SinglyLinkedList.h" />
+    <ClInclude Include="LinkedLists\SinglyLinkedNode.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="HashTables\HashTable.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="LinkedLists\SinglyLinkedList.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>

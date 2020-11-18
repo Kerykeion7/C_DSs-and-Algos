@@ -30,6 +30,9 @@
     <ClCompile Include="Queues\ArrayQueues\ArrayQTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Queues\LinkedListQueues\LlstQTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Queues\ArrayQueues\pch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Queues\LinkedListQueues\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,6 +30,9 @@
     <ClInclude Include="LinkedLists\SinglyLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Queues\ArrayQueues\ArrayQ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LinkedLists\SinglyLinkedList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Queues\ArrayQueues\ArrayQ.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

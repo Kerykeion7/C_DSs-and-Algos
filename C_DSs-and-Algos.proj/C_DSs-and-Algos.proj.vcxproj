@@ -24,6 +24,7 @@
     <ClInclude Include="HashTables\HashTableEntry.h" />
     <ClInclude Include="LinkedLists\SinglyLinkedList.h" />
     <ClInclude Include="LinkedLists\SinglyLinkedNode.h" />
+    <ClInclude Include="Queues\ArrayQueues\ArrayQ.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
@@ -33,6 +34,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="LinkedLists\SinglyLinkedList.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Queues\ArrayQueues\ArrayQ.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>

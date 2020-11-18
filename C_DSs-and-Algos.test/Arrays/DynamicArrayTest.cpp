@@ -4,9 +4,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace CDSsandAlgostest
+namespace DynamicArrayTest
 {
-	TEST_CLASS(CDSsandAlgostest)
+	TEST_CLASS(DynamicArrayTest)
 	{
 	public:
 

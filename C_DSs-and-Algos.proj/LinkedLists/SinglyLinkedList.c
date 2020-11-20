@@ -9,12 +9,6 @@ void exit_if_out_of_bounds(SinglyLinkedList* lst, int index) {
     }
 }
 
-void exit_if_sllst_not_allocated(void* obj) {
-    if (obj == NULL) {
-        exit(EXIT_FAILURE);
-    }
-}
-
 void exit_if_empty(SinglyLinkedList* lst) {
     if (lst->is_sllst_empty(lst))
     {
@@ -33,6 +27,7 @@ void push_front(SinglyLinkedList* lst, int value) {
 
     newHead->next = lst->first;
     lst->first = newHead;
+    lst->length++;
 }
 
 int pop_front(SinglyLinkedList* lst) {
@@ -48,6 +43,7 @@ int pop_front(SinglyLinkedList* lst) {
     else lst->first = oldHead->next;
 
     free(oldHead);
+    lst->length--;
     return oldVal;
 }
 
@@ -67,6 +63,7 @@ void push_back(SinglyLinkedList* lst, int value) {
     }
 
     newTail->next = NULL;
+    lst->length++;
 }
 
 int pop_back(SinglyLinkedList* lst) {
@@ -90,6 +87,7 @@ int pop_back(SinglyLinkedList* lst) {
     }
 
     free(last);
+    lst->length--;
     return oldVal;
 }
 
@@ -130,20 +128,11 @@ void insert_sllst_at(SinglyLinkedList* lst, int value, int index) {
 
     newNode->next = previous->next;
     previous->next = newNode;
+    lst->length++;
 }
 
 int get_sllst_size(SinglyLinkedList* lst) {
-    int counter = 0;
-    if (lst->first != NULL)
-    {
-        SinglyLinkedNode* current = lst->first;
-        while (current != NULL)
-        {
-            current = current->next;
-            counter++;
-        }
-    }
-    return counter;
+    return lst->length;
 }
 
 bool is_sllst_empty(SinglyLinkedList* lst) {
@@ -211,6 +200,7 @@ void sllst_remove_at(SinglyLinkedList* lst, int index) {
 
     nodeToRemove = NULL;
     free(nodeToRemove);
+    lst->length--;
 }
 
 void remove_value(SinglyLinkedList* lst, int value) {
@@ -255,6 +245,7 @@ SinglyLinkedList* initialize_singlyLinkedList() {
 
     lst->first = NULL;
     lst->last = NULL;
+    lst->length = 0;
 
     lst->push_front = &push_front;
     lst->pop_front = &pop_front;

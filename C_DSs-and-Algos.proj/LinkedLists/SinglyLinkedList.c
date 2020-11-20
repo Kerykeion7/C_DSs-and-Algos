@@ -24,7 +24,9 @@ void exit_if_empty(SinglyLinkedList* lst) {
 
 void push_front(SinglyLinkedList* lst, int value) {
     SinglyLinkedNode* newHead = (SinglyLinkedNode*)malloc(sizeof(SinglyLinkedNode));
-    exit_if_sllst_not_allocated(newHead);
+    if (!newHead) {
+        exit(EXIT_FAILURE);
+    }
     newHead->value = value;
 
     if (lst->first == NULL) lst->last = newHead;
@@ -51,7 +53,7 @@ int pop_front(SinglyLinkedList* lst) {
 
 void push_back(SinglyLinkedList* lst, int value) {
     SinglyLinkedNode* newTail = (SinglyLinkedNode*)malloc(sizeof(SinglyLinkedNode));
-    exit_if_sllst_not_allocated(newTail);
+    if (!newTail) exit(EXIT_FAILURE);
     newTail->value = value;
 
     if (lst->first == NULL) {
@@ -115,7 +117,7 @@ void insert_sllst_at(SinglyLinkedList* lst, int value, int index) {
     }
 
     SinglyLinkedNode* newNode = (SinglyLinkedNode*)malloc(sizeof(SinglyLinkedNode));
-    exit_if_sllst_not_allocated(newNode);
+    if (!newNode) exit(EXIT_FAILURE);
     newNode->value = value;
 
     SinglyLinkedNode* previous = lst->first;
@@ -249,7 +251,7 @@ void reverse(SinglyLinkedList* lst) {
 
 SinglyLinkedList* initialize_singlyLinkedList() {
     SinglyLinkedList* lst = (SinglyLinkedList*)malloc(sizeof(SinglyLinkedList));
-    exit_if_sllst_not_allocated(lst);
+    if (!lst) exit(EXIT_FAILURE);
 
     lst->first = NULL;
     lst->last = NULL;

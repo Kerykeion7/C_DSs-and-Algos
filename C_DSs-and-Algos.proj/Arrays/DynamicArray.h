@@ -1,7 +1,7 @@
 #pragma once
 #include <stdbool.h>
 
-const int minCapacity = 16;
+const int minCapacity = 6;
 
 typedef struct DynamicArray {
     int capacity;

@@ -6,6 +6,8 @@ typedef struct SinglyLinkedList {
     struct SinglyLinkedNode* first;
     struct SinglyLinkedNode* last;
 
+    int length;
+
     int (*get_sllst_size)(struct SinglyLinkedList*);
     bool (*is_sllst_empty)(struct SinglyLinkedList*);
     int (*get_value_at_from_start)(struct SinglyLinkedList*, int index);

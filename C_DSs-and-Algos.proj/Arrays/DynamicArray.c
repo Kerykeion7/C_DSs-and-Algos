@@ -29,16 +29,26 @@ int index_of(DynamicArray* array, int item) {
 }
 
 void resize(DynamicArray* array) {
+    int* items = array->items;
+    if (!items) {
+        exit(EXIT_FAILURE);
+    }
+    array->items = NULL;
+    free(array->items);
     if (array->count >= array->capacity)
     {
         array->capacity *= 2;
-        array->items = (int*)realloc(array->items, array->capacity * sizeof(int));
+        array->items = (int*)realloc(items, array->capacity * sizeof(int));
     }
     else if (array->count <= (array->capacity / 4))
     {
         array->capacity /= 4;
-        array->items = (int*)realloc(array->items, array->capacity * sizeof(int));
+        array->items = (int*)realloc(items, array->capacity * sizeof(int));
     }
+    if (!array->items) {
+        exit(EXIT_FAILURE);
+    }
+    free(items);
 }
 
 void exit_on_invalid_index(DynamicArray* array, int index) {
@@ -128,9 +138,15 @@ DynamicArray* init(int capacity) {
     if (capacity < minCapacity) capacity = minCapacity;
 
     DynamicArray* array = (DynamicArray*)malloc(sizeof(DynamicArray));
+    if (!array) {
+        exit(EXIT_FAILURE);
+    }
     array->count = 0;
     array->capacity = capacity;
     array->items = (int*)malloc(capacity * sizeof(int));
+    if (!array->items) {
+        exit(EXIT_FAILURE);
+    }
     array->push = &push;
     array->pop = &pop;
     array->get_at = &get_at;

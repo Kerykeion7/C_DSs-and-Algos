@@ -7,13 +7,12 @@ bool is_empty(DynamicArray* array) {
 }
 
 void clear(DynamicArray* array) {
-    int old_count = array->count - 1;
-    for (int i = 0; i < old_count; i++)
+    size_t old_count = array->count - 1;
+    for (size_t i = 0; i < old_count; i++)
     {
         array->pop(array);
     }
 
-    free(array->items);
     array->count = 0;
 }
 
@@ -28,16 +27,34 @@ int index_of(DynamicArray* array, int item) {
     return -1;
 }
 
+void resize_array(DynamicArray* array, int capacitySize)
+{
+    int* items = array->items;
+    if (!items) {
+        exit(EXIT_FAILURE);
+    }
+    array->items = NULL;
+    free(array->items);
+    array->capacity = capacitySize;
+    array->items = (int*)realloc(items, array->capacity * sizeof(int));
+    if (!array->items) {
+        exit(EXIT_FAILURE);
+    }
+    items = NULL;
+    free(items);
+}
+
 void resize(DynamicArray* array) {
     if (array->count >= array->capacity)
     {
-        array->capacity *= 2;
-        array->items = (int*)realloc(array->items, array->capacity * sizeof(int));
+        resize_array(array, (array->capacity * 2));
     }
     else if (array->count <= (array->capacity / 4))
     {
-        array->capacity /= 4;
-        array->items = (int*)realloc(array->items, array->capacity * sizeof(int));
+        if ((array->capacity / 4) >= minCapacity)
+        {
+            resize_array(array, (array->capacity / 4));
+        }
     }
 }
 
@@ -56,8 +73,8 @@ void remove_at(DynamicArray* array, int index) {
 }
 
 void remove_item(DynamicArray* array, int item) {
-    int old_count = array->count;
-    for (int i = 0; i < old_count; i++)
+    size_t old_count = array->count;
+    for (size_t i = 0; i < old_count; i++)
     {
         if (*(array->items + i) == item)
         {
@@ -68,8 +85,7 @@ void remove_item(DynamicArray* array, int item) {
 }
 
 void push(DynamicArray* array, int item) {
-    if (is_empty(array) == 0) resize(array);
-
+    resize(array);
     int* pointer = array->items;
     pointer += array->count;
     *pointer = item;
@@ -128,9 +144,15 @@ DynamicArray* init(int capacity) {
     if (capacity < minCapacity) capacity = minCapacity;
 
     DynamicArray* array = (DynamicArray*)malloc(sizeof(DynamicArray));
+    if (!array) {
+        exit(EXIT_FAILURE);
+    }
     array->count = 0;
     array->capacity = capacity;
     array->items = (int*)malloc(capacity * sizeof(int));
+    if (!array->items) {
+        exit(EXIT_FAILURE);
+    }
     array->push = &push;
     array->pop = &pop;
     array->get_at = &get_at;

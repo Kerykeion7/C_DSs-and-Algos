@@ -2,19 +2,13 @@
 #include <stdlib.h>
 #include "LlstQ.h"
 
-void exit_if_lq_not_allocated(void* obj) {
-    if (obj == NULL) {
-        exit(EXIT_FAILURE);
-    }
-}
-
 bool is_Lq_empty(LlstQ* q) {
     return q->count == 0;
 }
 
 void enqueue_Lq(LlstQ* q, int value) {
     LlstQnode* newTail = (LlstQnode*)malloc(sizeof(LlstQnode));
-    exit_if_lq_not_allocated(newTail);
+    if (!newTail) exit(EXIT_FAILURE);
 
     newTail->next = NULL;
     newTail->value = value;
@@ -58,7 +52,7 @@ int dequeue_Lq(LlstQ* q) {
 
 LlstQ* init_lq_queue() {
     LlstQ* q = (LlstQ*)malloc(sizeof(LlstQ));
-    exit_if_lq_not_allocated(q);
+    if (!q) exit(EXIT_FAILURE);
 
     q->count = 0;
     q->head = NULL;

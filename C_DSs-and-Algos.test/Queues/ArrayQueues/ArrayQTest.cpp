@@ -15,5 +15,15 @@ namespace ArrayQTest
 			ArrayQ* q = init_array_q();
 			Assert::IsNotNull(q);
 		}
+
+	private:
+
+		void SetupTestArrayQ(ArrayQ* q)
+		{
+			q->enqueue(q, 2);
+			q->enqueue(q, 3);
+			q->enqueue(q, 4);
+			q->enqueue(q, 5);
+		}
 	};
 }

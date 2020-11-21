@@ -2,12 +2,6 @@
 #include <stdlib.h>
 #include "ArrayQ.h"
 
-void exit_if_arrayQ_not_allocated(void* obj) {
-    if (obj == NULL) {
-        exit(EXIT_FAILURE);
-    }
-}
-
 bool is_arrayQ_empty(ArrayQ* q) {
     return q->count == 0;
 }
@@ -42,7 +36,7 @@ int dequeue(ArrayQ* q) {
 
 ArrayQ* init_array_q() {
     ArrayQ* q = (ArrayQ*)malloc(sizeof(ArrayQ));
-    exit_if_arrayQ_not_allocated(q);
+    if (!q) exit(EXIT_FAILURE);
 
     q->count = 0;
     q->max_cap = 6;

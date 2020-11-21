@@ -11,28 +11,31 @@ int hash(int key, int tableCap) {
     return ((key * 2) + (key + 10)) % tableCap;
 }
 
-bool exists(HashTable* table, int key) {
-    for (int i = 0; i < table->capacity; i++)
+int index_of(HashTable* table, int key) {
+    int hashed = hash(key, table->capacity);
+    int index = hashed;
+    int counter = 1;
+    while (true)
     {
-        if ((table->entries + i)->value)
-            if ((table->entries + i)->key == key)
-                return true;
+        if (!(table->entries + index) || (table->entries + index)->value == NULL) return -1;
+        if ((table->entries + index)->key == key) return index;
+        index = (hashed + linear_probe(table, counter)) % table->capacity;
+        counter++;
     }
-
-    return false;
 }
 
 HashTableEntry* get_entry(HashTable* table, int key) {
-    if (!exists(table, key)) return NULL;
-
-    int hashed = hash(key, table->capacity);
-    int counter = 0;
-    while ((table->entries + hashed)->key != key) {
-        hashed += linear_probe(table, counter);
-        counter++;
+    int index = index_of(table, key);
+    if (index == -1) {
+        return NULL;
     }
 
-    return (table->entries + hashed);
+    return (table->entries + index);
+}
+
+bool exists(HashTable* table, int key) {
+    if (get_entry(table, key)) return true;
+    return false;
 }
 
 char* get(HashTable* table, int key) {
@@ -87,25 +90,26 @@ void add(HashTable* table, int key, char* value) {
     }
 
     int hashed = hash(key, table->capacity);
+    int index = hashed;
     int counter = 1;
-    while ((table->entries + hashed)->value)
+    while ((table->entries + index)->value)
     {
-        hashed += linear_probe(table, counter);
+        index = (hashed + linear_probe(table, counter)) % table->capacity;
         counter++;
     }
 
-    (table->entries + hashed)->key = key;
-    (table->entries + hashed)->value = value;
+    (table->entries + index)->key = key;
+    (table->entries + index)->value = value;
     table->count++;
     if (table->count == table->resize_treshold) resize_hashtable(table, (table->capacity * 2));
 }
 
 void remove_key_value_pair(HashTable* table, int key) {
-    HashTableEntry* entry = get_entry(table, key);
-    if (entry) {
-        entry->value = NULL;
-        entry = NULL;
-        free(entry);
+    int index = index_of(table, key);
+    if (index != -1) {
+        (table->entries + index)->key = 0;
+        (table->entries + index)->value = NULL;
+        free((table->entries + index)->value);
         table->count--;
     }
 }

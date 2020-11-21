@@ -72,11 +72,10 @@ void set_props(HashTable* table, int capacity) {
 void resize_hashtable(HashTable* table, int new_capacity) {
     int old_capacity = table->capacity;
     HashTableEntry* oldEntries = table->entries;
-
+    table->entries = NULL;
+    free(table->entries);
     set_props(table, new_capacity);
-    HashTableEntry* newEntries = set_entries(table->capacity);
-
-    table->entries = newEntries;
+    table->entries = set_entries(table->capacity);
 
     for (int i = 0; i < old_capacity; i++)
     {
@@ -85,6 +84,7 @@ void resize_hashtable(HashTable* table, int new_capacity) {
         }
     }
 
+    oldEntries = NULL;
     free(oldEntries);
 }
 

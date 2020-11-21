@@ -3,12 +3,6 @@
 #include <math.h>
 #include "HashTable.h"
 
-void exit_if_not_allocated(void* obj) {
-    if (obj == NULL) {
-        exit(EXIT_FAILURE);
-    }
-}
-
 int linear_probe(HashTable* table, int multiplier) {
     return table->lp_factor * multiplier;
 }
@@ -50,7 +44,7 @@ char* get(HashTable* table, int key) {
 
 HashTableEntry* set_entries(int capacity) {
     HashTableEntry* entries = (HashTableEntry*)malloc(capacity * sizeof(HashTableEntry));
-    exit_if_not_allocated(entries);
+    if (!entries) exit(EXIT_FAILURE);
     for (int i = 0; i < capacity; i++)
     {
         (entries + i)->value = NULL;
@@ -63,20 +57,7 @@ void set_props(HashTable* table, int capacity) {
     table->capacity = capacity;
     table->lp_factor = 1;
     table->max_load_factor = 2.0F / 3.0F;
-    table->resize_treshold = floor(table->capacity * table->max_load_factor);
-}
-
-void insert(HashTable* table, HashTableEntry entry) {
-    int hashed = hash(entry.key, table->capacity);
-    int counter = 0;
-    while ((table->entries + hashed)->value)
-    {
-        hashed += linear_probe(table, counter);
-        counter++;
-    }
-
-    *(table->entries + hashed) = entry;
-    table->count++;
+    table->resize_treshold = table->capacity * table->max_load_factor;
 }
 
 void resize_hashtable(HashTable* table, int new_capacity) {
@@ -105,28 +86,33 @@ void add(HashTable* table, int key, char* value) {
         return;
     }
 
-    HashTableEntry entry;
-    entry.key = key;
-    entry.value = value;
+    int hashed = hash(key, table->capacity);
+    int counter = 1;
+    while ((table->entries + hashed)->value)
+    {
+        hashed += linear_probe(table, counter);
+        counter++;
+    }
 
-    insert(table, entry);
+    (table->entries + hashed)->key = key;
+    (table->entries + hashed)->value = value;
+    table->count++;
     if (table->count == table->resize_treshold) resize_hashtable(table, (table->capacity * 2));
 }
 
 void remove_key_value_pair(HashTable* table, int key) {
     HashTableEntry* entry = get_entry(table, key);
     if (entry) {
-        free(entry->value);
-        free(entry);
         entry->value = NULL;
         entry = NULL;
+        free(entry);
         table->count--;
     }
 }
 
 HashTable* init_hashtable() {
     HashTable* table = (HashTable*)malloc(sizeof(HashTable));
-    exit_if_not_allocated(table);
+    if (!table) exit(EXIT_FAILURE);
     set_props(table, 10);
     table->entries = set_entries(table->capacity);
     table->get = &get;

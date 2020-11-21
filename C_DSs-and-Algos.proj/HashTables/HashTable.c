@@ -11,24 +11,30 @@ int hash(int key, int tableCap) {
     return ((key * 2) + (key + 10)) % tableCap;
 }
 
-int index_of(HashTable* table, int key) {
+int get_index(HashTable* table, int key) {
     int hashed = hash(key, table->capacity);
     int index = hashed;
     int counter = 1;
     while (true)
     {
-        if (!(table->entries + index) || (table->entries + index)->value == NULL) return -1;
-        if ((table->entries + index)->key == key) return index;
+        if (!(table->entries + index)
+            || (table->entries + index)->value == NULL 
+            || (table->entries + index)->key == key) return index;
+
         index = (hashed + linear_probe(table, counter)) % table->capacity;
         counter++;
     }
 }
 
+int index_of(HashTable* table, int key) {
+    int index = get_index(table, key);
+    if (!(table->entries + index) || (table->entries + index)->value == NULL) return -1;
+    return index;
+}
+
 HashTableEntry* get_entry(HashTable* table, int key) {
     int index = index_of(table, key);
-    if (index == -1) {
-        return NULL;
-    }
+    if (index == -1) return NULL;
 
     return (table->entries + index);
 }
@@ -89,15 +95,7 @@ void add(HashTable* table, int key, char* value) {
         return;
     }
 
-    int hashed = hash(key, table->capacity);
-    int index = hashed;
-    int counter = 1;
-    while ((table->entries + index)->value)
-    {
-        index = (hashed + linear_probe(table, counter)) % table->capacity;
-        counter++;
-    }
-
+    int index = get_index(table, key);
     (table->entries + index)->key = key;
     (table->entries + index)->value = value;
     table->count++;

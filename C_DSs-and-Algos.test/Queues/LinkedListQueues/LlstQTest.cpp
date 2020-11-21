@@ -15,5 +15,16 @@ namespace LlstQTest
 			LlstQ* q = init_lq_queue();
 			Assert::IsNotNull(q);
 		}
+
+	private:
+		LlstQ* SetupTestLstQ()
+		{
+			LlstQ* q = init_lq_queue();
+			q->enqueue_Lq(q, 1);
+			q->enqueue_Lq(q, 2);
+			q->enqueue_Lq(q, 3);
+			q->enqueue_Lq(q, 4);
+			return q;
+		}
 	};
 }

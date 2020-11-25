@@ -39,6 +39,9 @@
     <ClInclude Include="Queues\LinkedListQueues\LlstQnode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BinarySearches\BinarySearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
@@ -54,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Queues\LinkedListQueues\LlstQ.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinarySearches\BinarySearch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

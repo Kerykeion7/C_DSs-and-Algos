@@ -26,14 +26,14 @@ int get_index(HashTable* table, int key) {
     }
 }
 
-int index_of(HashTable* table, int key) {
+int hash_index_of(HashTable* table, int key) {
     int index = get_index(table, key);
     if (!(table->entries + index) || (table->entries + index)->value == NULL) return -1;
     return index;
 }
 
 HashTableEntry* get_entry(HashTable* table, int key) {
-    int index = index_of(table, key);
+    int index = hash_index_of(table, key);
     if (index == -1) return NULL;
 
     return (table->entries + index);
@@ -103,7 +103,7 @@ void add(HashTable* table, int key, char* value) {
 }
 
 void remove_key_value_pair(HashTable* table, int key) {
-    int index = index_of(table, key);
+    int index = hash_index_of(table, key);
     if (index != -1) {
         (table->entries + index)->key = 0;
         (table->entries + index)->value = NULL;

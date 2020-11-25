@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArrayTest.cpp" />
+    <ClCompile Include="BinarySearches\BinarySearchTest.cpp" />
     <ClCompile Include="HashTables\HashTableTest.cpp" />
     <ClCompile Include="LinkedLists\SinglyLinkedListTest.cpp" />
     <ClCompile Include="pch.cpp">
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arrays\pch.h" />
+    <ClInclude Include="BinarySearches\pch.h" />
     <ClInclude Include="HashTables\pch.h" />
     <ClInclude Include="LinkedLists\pch.h" />
     <ClInclude Include="pch.h" />

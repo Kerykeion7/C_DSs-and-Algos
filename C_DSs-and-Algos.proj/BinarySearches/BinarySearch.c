@@ -5,16 +5,12 @@ int bin_srch(int* array, int first, int last, int searchValue) {
 	if (first > last) exit(EXIT_FAILURE);
 
 	int middle = (int)((last - first) / 2);
-	if (middle < first) middle += first;
+	if (middle <= first) middle += first;
 	int val = array[middle];
 
-	if ((last - first) > 1)
-	{
-		if (searchValue < val) return bin_srch(array, first, middle, searchValue);
-		if (searchValue > val) return bin_srch(array, middle, last, searchValue);
-	}
-
-	if(val == searchValue) return val;
+	if (searchValue < val) return bin_srch(array, first, middle, searchValue);
+	if (searchValue > val) return bin_srch(array, middle, last, searchValue);
+	if(val == searchValue) return middle;
 
 	return -1;
 }

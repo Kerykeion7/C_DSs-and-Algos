@@ -1,35 +1,25 @@
 #include <stdlib.h>
 
-int binary_search(int* array, int arraySize, int searchValue) {
+int bin_srch(int* array, int first, int last, int searchValue) {
 	if (!array) exit(EXIT_FAILURE);
-	int middle = (int)(arraySize / 2);
+	if (first > last) exit(EXIT_FAILURE);
+
+	int middle = (int)((last - first) / 2);
+	if (middle < first) middle += first;
 	int val = array[middle];
 
-	if (arraySize > 1)
+	if ((last - first) > 1)
 	{
-		if (searchValue < val) {
-			int* left = (int*)malloc(middle * sizeof(int));
-			if (!left) exit(EXIT_FAILURE);
-			for (int i = 0; i < middle; i++)
-			{
-				*(left + i) = array[i];
-			}
-			return binary_search(left, middle, searchValue);
-		}
-		if (searchValue > val)
-		{
-			int s = arraySize - middle;
-			int j = s;
-			int* right = (int*)malloc(s * sizeof(int));
-			if (!right) exit(EXIT_FAILURE);
-			for (int i = 0; i < arraySize - middle; i++)
-			{
-				right[i] = array[j];
-				j++;
-			}
-			return binary_search(right, s, searchValue);
-		}
+		if (searchValue < val) return bin_srch(array, first, middle, searchValue);
+		if (searchValue > val) return bin_srch(array, middle, last, searchValue);
 	}
 
-	return val;
+	if(val == searchValue) return val;
+
+	return -1;
+}
+
+int binary_search(int* array, int arraySize, int searchValue) {
+	if (!array) exit(EXIT_FAILURE);
+	return bin_srch(array, 0, arraySize, searchValue);
 }

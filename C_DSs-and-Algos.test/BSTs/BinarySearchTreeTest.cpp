@@ -51,6 +51,7 @@ namespace BinarySearchTreeTest
 			insert_tree_node(tree, -1);
 			Assert::IsTrue(tree->Root->LeftChild->LeftChild->RightChild->value == 2);
 			Assert::IsTrue(tree->Root->LeftChild->LeftChild->LeftChild->value == -1);
+			Assert::IsTrue(tree->count == 9);
 		}
 	};
 }

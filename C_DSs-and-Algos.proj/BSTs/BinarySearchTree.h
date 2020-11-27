@@ -2,6 +2,7 @@
 #include "BinarySearchTreeNode.h"
 
 typedef struct BinarySearchTree {
+	int count;
 	struct BinarySearchTreeNode* Root;
 } BinarySearchTree;
 

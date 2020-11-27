@@ -6,6 +6,7 @@ BinarySearchTree* init_bin_srch_tree()
 	BinarySearchTree* tree = (BinarySearchTree*)malloc(sizeof(BinarySearchTree));
 	if (!tree) return NULL;
 	tree->Root = NULL;
+	tree->count = 0;
 	return tree;
 }
 
@@ -39,6 +40,7 @@ void insert_tree_node(BinarySearchTree* tree, int value)
 {
 	if (!tree->Root) {
 		set_bin_srch_tree_root(tree, value);
+		tree->count++;
 		return;
 	}
 
@@ -48,11 +50,12 @@ void insert_tree_node(BinarySearchTree* tree, int value)
 	BinarySearchTreeNode* newNode = set_new_tree_node(parent, value);
 	if (value < parent->value) parent->LeftChild = newNode;
 	if (value > parent->value) parent->RightChild = newNode;
+	tree->count++;
 }
 
 int get_tree_node_count(BinarySearchTree* tree)
 {
-	return 0;
+	return tree->count;
 }
 
 int* get_all_ordered(BinarySearchTree* tree)

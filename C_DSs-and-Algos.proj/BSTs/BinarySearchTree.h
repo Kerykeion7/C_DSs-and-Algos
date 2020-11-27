@@ -15,6 +15,7 @@ bool tree_node_exists(BinarySearchTree* tree, int value);
 int get_tree_height(BinarySearchTree* tree);
 int get_min_tree_value(BinarySearchTree* tree);
 int get_max_tree_value(BinarySearchTree* tree);
+bool is_bin_srch_tree(BinarySearchTree* tree);
 void delete_tree_node_by_given_value(BinarySearchTree* tree, int value);
 int get_successor_of(BinarySearchTree* tree, int value);
 

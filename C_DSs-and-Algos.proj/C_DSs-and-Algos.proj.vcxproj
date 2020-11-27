@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Arrays\DynamicArray.h" />
     <ClInclude Include="BinarySearches\BinarySearch.h" />
+    <ClInclude Include="BSTs\BinarySearchTree.h" />
+    <ClInclude Include="BSTs\BinarySearchTreeNode.h" />
     <ClInclude Include="HashTables\HashTable.h" />
     <ClInclude Include="HashTables\HashTableEntry.h" />
     <ClInclude Include="LinkedLists\SinglyLinkedList.h" />
@@ -34,6 +36,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="BinarySearches\BinarySearch.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="BSTs\BinarySearchTree.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="HashTables\HashTable.c">

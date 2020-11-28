@@ -42,6 +42,12 @@
     <ClInclude Include="BinarySearches\BinarySearch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BSTs\BinarySearchTreeNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BSTs\BinarySearchTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Arrays\DynamicArray.c">
@@ -60,6 +66,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BinarySearches\BinarySearch.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BSTs\BinarySearchTree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

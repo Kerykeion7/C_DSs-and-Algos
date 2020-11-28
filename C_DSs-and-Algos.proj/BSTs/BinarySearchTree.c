@@ -169,13 +169,22 @@ bool right_is_all_bigger(BinarySearchTreeNode* node, int rootValue) {
 	}
 }
 
+bool is_bst(BinarySearchTreeNode* node) {
+	if (node) {
+		if (!left_is_all_smaller(node->LeftChild, node->value) ||
+			!right_is_all_bigger(node->RightChild, node->value))
+			return false;
+		is_bst(node->LeftChild);
+		is_bst(node->RightChild);
+	}
+}
+
 bool is_bin_srch_tree(BinarySearchTree* tree)
 {
 	if (!tree->Root) return true;
 
-	if (left_is_all_smaller(tree->Root->LeftChild, tree->Root->value) &&
-		right_is_all_bigger(tree->Root->RightChild, tree->Root->value))
-		return true;
+	return is_bst(tree->Root);
+
 	return false;
 }
 
@@ -240,6 +249,8 @@ void dig_as_far_right_of_left_sub_tree_and_replace_appropriately(BinarySearchTre
 	nodeToReplaceWith->RightChild = tempNodeToRemove->RightChild;
 	tempNodeToRemove->LeftChild->Parent = nodeToReplaceWith;
 	tempNodeToRemove->RightChild->Parent = nodeToReplaceWith;
+
+	destroy_bin_srch_tree_node(tempNodeToRemove);
 }
 
 void remove_and_replace_with_appropriate_child(BinarySearchTree* tree, BinarySearchTreeNode* node) {

@@ -24,7 +24,7 @@ void set_bin_srch_tree_root(BinarySearchTree* tree, int value) {
 	tree->Root = (BinarySearchTreeNode*)malloc(sizeof(BinarySearchTreeNode));
 	if (!tree->Root) exit(EXIT_FAILURE);
 	tree->Root->value = value;
-	tree->Root->Parent = tree->Root;
+	tree->Root->Parent = NULL;
 	tree->Root->LeftChild = NULL;
 	tree->Root->RightChild = NULL;
 }
@@ -81,12 +81,19 @@ int* get_all_ordered(BinarySearchTree* tree)
 	return values;
 }
 
+void destroy_bin_srch_tree_node(BinarySearchTreeNode* node) {
+	node->Parent = NULL;
+	node->LeftChild = NULL;
+	node->RightChild = NULL;
+	node = NULL;
+	free(node);
+}
+
 void traverse_to_destroy(BinarySearchTreeNode* node) {
 	if (node) {
 		traverse_to_destroy(node->LeftChild);
 		traverse_to_destroy(node->RightChild);
-		node = NULL;
-		free(node);
+		destroy_bin_srch_tree_node(node);
 	}
 }
 
@@ -97,16 +104,16 @@ void delete_bin_srch_tree(BinarySearchTree* tree)
 	free(tree);
 }
 
-bool traverse_and_return_true_if_exists(BinarySearchTreeNode* node, int value) {
-	if (!node) return false;
-	if (node->value == value) return true;
-	if (value < node->value) return traverse_and_return_true_if_exists(node->LeftChild, value);
-	return traverse_and_return_true_if_exists(node->RightChild, value);
+BinarySearchTreeNode* traverse_and_return_node_with_given_value(BinarySearchTreeNode* node, int value) {
+	if (!node) return NULL;
+	if (node->value == value) return node;
+	if (value < node->value) return traverse_and_return_node_with_given_value(node->LeftChild, value);
+	return traverse_and_return_node_with_given_value(node->RightChild, value);
 }
 
 bool tree_node_exists(BinarySearchTree* tree, int value)
 {
-	return traverse_and_return_true_if_exists(tree->Root, value);
+	return (traverse_and_return_node_with_given_value(tree->Root, value));
 }
 
 int count_node_depth(BinarySearchTreeNode* node) {
@@ -172,12 +179,90 @@ bool is_bin_srch_tree(BinarySearchTree* tree)
 	return false;
 }
 
+void replace_parent_or_root(BinarySearchTree* tree, BinarySearchTreeNode* parent, BinarySearchTreeNode* newNode) {
+	if (parent) {
+		if (parent->value < newNode->value) parent->RightChild = newNode;
+		if (parent->value > newNode->value) parent->LeftChild = newNode;
+	}
+	else tree->Root = newNode;
+}
+
+void replace_with_left_child(BinarySearchTree* tree, BinarySearchTreeNode* node) {
+	node->LeftChild->Parent = node->Parent;
+	if (node->RightChild) {
+		node->RightChild->Parent = node->LeftChild;
+		node->LeftChild->RightChild = node->RightChild;
+	}
+	replace_parent_or_root(tree, node->Parent, node->LeftChild);
+}
+
+void replace_with_right_child(BinarySearchTree* tree, BinarySearchTreeNode* node) {
+	node->RightChild->Parent = node->Parent;
+	if (node->LeftChild) {
+		node->LeftChild->Parent = node->RightChild;
+		node->RightChild->LeftChild = node->LeftChild;
+	}
+	replace_parent_or_root(tree, node->Parent, node->RightChild);
+}
+
+void just_remove_when_childless(BinarySearchTreeNode* node) {
+	if (!node->RightChild && !node->LeftChild) {
+		if (node->Parent) {
+			if (node->value < node->Parent->value) node->Parent->LeftChild = NULL;
+			if (node->value > node->Parent->value) node->Parent->RightChild = NULL;
+		}
+	}
+	destroy_bin_srch_tree_node(node);
+}
+
+void remove_and_replace_appropriately(BinarySearchTree* tree, BinarySearchTreeNode* node) {
+	if (node->LeftChild && !node->RightChild) replace_with_left_child(tree, node);
+	if (node->RightChild && !node->LeftChild) replace_with_right_child(tree, node);
+	just_remove_when_childless(node);
+	tree->count--;
+}
+
+void dig_as_far_right_of_left_sub_tree_and_replace_appropriately(BinarySearchTree* tree, BinarySearchTreeNode* nodeToRemove, BinarySearchTreeNode* nodeToReplaceWith) {
+	if (nodeToReplaceWith->RightChild) {
+		dig_as_far_right_of_left_sub_tree_and_replace_appropriately(tree, nodeToRemove, nodeToReplaceWith->RightChild);
+		return;
+	}
+	BinarySearchTreeNode* tempNodeToRemove = nodeToRemove;
+	BinarySearchTreeNode* tempNodeToReplaceWith = nodeToReplaceWith;
+	remove_and_replace_appropriately(tree, nodeToReplaceWith);
+	nodeToRemove = nodeToReplaceWith;
+	nodeToReplaceWith->Parent = tempNodeToRemove->Parent;
+
+	if (tempNodeToRemove->Parent) tempNodeToRemove->Parent->RightChild = nodeToReplaceWith;
+	else tree->Root = nodeToReplaceWith;
+
+	nodeToReplaceWith->LeftChild = tempNodeToRemove->LeftChild;
+	nodeToReplaceWith->RightChild = tempNodeToRemove->RightChild;
+	tempNodeToRemove->LeftChild->Parent = nodeToReplaceWith;
+	tempNodeToRemove->RightChild->Parent = nodeToReplaceWith;
+}
+
+void remove_and_replace_with_appropriate_child(BinarySearchTree* tree, BinarySearchTreeNode* node) {
+	if (!node) exit(EXIT_FAILURE);
+
+	if (node->LeftChild && node->RightChild) dig_as_far_right_of_left_sub_tree_and_replace_appropriately(tree, node, node->LeftChild);
+	else remove_and_replace_appropriately(tree, node);
+}
+
 void delete_tree_node_by_given_value(BinarySearchTree* tree, int value)
 {
-
+	remove_and_replace_with_appropriate_child(
+		tree,
+		traverse_and_return_node_with_given_value(tree->Root, value));
 }
 
 int get_successor_of(BinarySearchTree* tree, int value)
 {
-	return 0;
+	int* values = get_all_ordered(tree);
+	for (int i = 0; i < _index; i++)
+	{
+		if (*(values + i) > value) return *(values + i);
+	}
+
+	return -1;
 }

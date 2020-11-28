@@ -35,7 +35,7 @@ namespace BinarySearchTreeTest
 			Assert::IsNull(tree->Root);
 			insert_tree_node(tree, 5);
 			Assert::IsNotNull(tree->Root);
-			Assert::IsTrue(tree->Root == tree->Root->Parent);
+			Assert::IsNull(tree->Root->Parent);
 			Assert::IsTrue(tree->Root->value == 5);
 			Assert::IsNull(tree->Root->LeftChild);
 			Assert::IsNull(tree->Root->RightChild);
@@ -77,6 +77,65 @@ namespace BinarySearchTreeTest
 			Assert::IsNotNull(tree->Root->LeftChild);
 			Assert::IsNotNull(tree->Root->RightChild);
 			delete_bin_srch_tree(tree);
+		}
+
+		TEST_METHOD(TestNodeDeletion) {
+			BinarySearchTree* tree = SetupTestTree();
+			insert_tree_node(tree, 7);
+			Assert::AreEqual(10, tree->count);
+			Assert::AreEqual(4, tree->Root->LeftChild->RightChild->value);
+			Assert::IsTrue(tree_node_exists(tree, 4));
+			delete_tree_node_by_given_value(tree, 4);
+
+			Assert::AreEqual(9, tree->count);
+
+			Assert::IsFalse(tree_node_exists(tree, 4));
+			Assert::IsNull(tree->Root->LeftChild->RightChild);
+			Assert::AreEqual(8, tree->Root->RightChild->value);
+			Assert::IsTrue(tree_node_exists(tree, 8));
+			Assert::AreEqual(7, tree->Root->RightChild->LeftChild->RightChild->value);
+			delete_tree_node_by_given_value(tree, 8);
+
+			Assert::AreEqual(8, tree->count);
+
+			Assert::IsFalse(tree_node_exists(tree, 8));
+			Assert::AreEqual(7, tree->Root->RightChild->value);
+			Assert::AreEqual(6, tree->Root->RightChild->LeftChild->value);
+			Assert::IsNull(tree->Root->RightChild->LeftChild->RightChild);
+			Assert::AreEqual(5, tree->Root->value);
+			Assert::IsTrue(tree_node_exists(tree, 5));
+			delete_tree_node_by_given_value(tree, 5);
+
+			Assert::AreEqual(7, tree->count);
+
+			Assert::IsFalse(tree_node_exists(tree, 5));
+			Assert::AreEqual(3, tree->Root->value);
+			Assert::AreEqual(7, tree->Root->RightChild->value);
+			Assert::AreEqual(1, tree->Root->LeftChild->value);
+			Assert::AreEqual(2, tree->Root->LeftChild->RightChild->value);
+			insert_tree_node(tree, 12);
+
+			Assert::AreEqual(4, get_tree_height(tree));
+			insert_tree_node(tree, 8);
+
+			Assert::AreEqual(4, get_tree_height(tree));
+			Assert::AreEqual(9, tree->Root->RightChild->RightChild->value);
+			Assert::AreEqual(12, tree->Root->RightChild->RightChild->RightChild->value);
+			Assert::AreEqual(8, tree->Root->RightChild->RightChild->LeftChild->value);
+			insert_tree_node(tree, 10);
+
+			Assert::AreEqual(5, get_tree_height(tree));
+			Assert::AreEqual(10, tree->Root->RightChild->RightChild->RightChild->LeftChild->value);
+			Assert::AreEqual(10, tree->count);
+
+			delete_tree_node_by_given_value(tree, 3);
+			Assert::IsTrue(tree->Root->value == 2
+				&& !tree_node_exists(tree, 3)
+				&& get_tree_node_count(tree) == 9
+				&& tree->Root->LeftChild->value == 1 
+				&& tree->Root->LeftChild->LeftChild->value == -1
+				&& tree->Root->RightChild->value == 7);
+			Assert::IsNull(tree->Root->LeftChild->RightChild);
 		}
 
 		TEST_METHOD(TestExists) {
@@ -159,6 +218,13 @@ namespace BinarySearchTreeTest
 			insert_tree_node(tree1, 2);
 			Assert::IsTrue(is_bin_srch_tree(tree));
 			Assert::IsTrue(is_bin_srch_tree(tree1));
+		}
+
+		TEST_METHOD(TestGetSuccessor) {
+			BinarySearchTree* tree = SetupTestTree();
+			Assert::AreEqual(1, get_successor_of(tree, -1));
+			Assert::AreEqual(-1, get_successor_of(tree, 9));
+			Assert::AreEqual(9, get_successor_of(tree, 8));
 		}
 	};
 }
